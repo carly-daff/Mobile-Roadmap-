@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Reimagined — Workstream Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f6ff;
+    --border: #e8e4f8;
+    --text: #1a1030;
+    --muted: #8a80a8;
+    --canva-purple: #7c3aed;
+    --canva-teal: #00c4b4;
+    --canva-pink: #ff4d8d;
+    --canva-gold: #f59e0b;
+    --canva-blue: #3b82f6;
+    --ws0: #6d28d9;
+    --ws1: #7c3aed;
+    --ws1b: #a78bfa;
+    --ws2: #0891b2;
+    --ws3: #db2777;
+    --ws4: #d97706;
+    --ws5: #dc2626;
+    --milestone: #7c3aed;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    padding: 40px 44px 60px;
+    min-width: 1100px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 2px solid var(--border);
+  }
+  .header-left {}
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--canva-purple);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .title em { color: var(--canva-purple); font-style: normal; }
+  .subtitle {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.65;
+  }
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .meta-pill {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .meta-pill.live {
+    color: var(--canva-teal);
+    border-color: #99f6e4;
+    background: #f0fdf9;
+  }
+
+  /* ── TIMELINE GRID ── */
+  /* Left label col = 260px, then 3 equal cols */
+  .tl-grid {
+    display: grid;
+    grid-template-columns: 260px repeat(3, 1fr);
+    align-items: stretch;
+  }
+
+  /* ── PERIOD HEADERS ── */
+  .tl-spacer { /* top-left corner */ }
+
+  .period-header {
+    padding: 10px 14px 10px;
+    border-left: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .period-header:first-of-type { border-radius: 8px 0 0 0; }
+  .period-header:last-of-type  { border-radius: 0 8px 0 0; }
+
+  .period-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .period-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .milestone-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--canva-purple);
+    background: #ede9fe;
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+  .milestone-star {
+    font-size: 12px;
+  }
+
+  /* ── WORKSTREAM ROWS ── */
+  .ws-label-cell {
+    padding: 16px 20px 16px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+  }
+  .ws-label-cell.grouped { /* used for track rows */ padding-top: 8px; padding-bottom: 8px; border-top: none; }
+
+  .ws-num {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .ws-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+  .ws-owner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .ws-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .ws-bullets li {
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.45;
+    padding-left: 10px;
+    position: relative;
+  }
+  .ws-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+
+  /* track sub-label */
+  .track-label-cell {
+    padding: 6px 20px 6px 12px;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+  }
+  .track-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    width: fit-content;
+    margin-bottom: 2px;
+  }
+  .track-desc {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ── TIMELINE CELLS ── */
+  .tl-cell {
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    min-height: 72px;
+    position: relative;
+  }
+  .tl-cell.track-row {
+    min-height: 44px;
+    padding: 8px 12px;
+    border-top: none;
+  }
+  .tl-cell.empty-col { background: transparent; }
+
+  /* ── BARS ── */
+  .bar {
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+  }
+  .bar.sub { height: 22px; font-size: 9px; border-radius: 5px; }
+  .bar.dashed {
+    background: transparent !important;
+    border: 1.5px dashed;
+    color: inherit;
+  }
+  /* Connector arrow from one cell to next — pure CSS */
+  .bar-connector {
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  /* Milestone star pinned inside a cell */
+  .ms-pin {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .ms-pin .star { font-size: 18px; line-height: 1; }
+  .ms-pin .ms-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--canva-purple);
+    white-space: nowrap;
+  }
+
+  /* dependency arrow overlay between cells */
+  .dep-arrow {
+    font-size: 9px;
+    color: var(--canva-purple);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 3px;
+    opacity: 0.7;
+  }
+
+  /* ── SECTION DIVIDERS ── */
+  .section-divider {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: var(--border);
+    margin: 2px 0;
+  }
+
+  /* ── BOTTOM SECTION ── */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .info-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .info-card-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .info-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 9px;
+    align-items: flex-start;
+  }
+  .info-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .info-text {
+    font-size: 11px;
+    color: #4a4060;
+    line-height: 1.5;
+  }
+  .info-text strong { color: var(--text); }
+
+  /* metrics strip */
+  .metrics-strip {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .metric-chip {
+    background: #fef2f2;
+    border: 1.5px solid #fecaca;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    color: #991b1b;
+    flex: 1;
+    min-width: 180px;
+  }
+  .metric-chip strong {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    color: #7f1d1d;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .legend-swatch {
+    width: 20px;
+    height: 8px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="eyebrow">Mobile Code Red · Workstream Roadmap</div>
+    <div class="title">Mobile <em>Reimagined</em></div>
+    <div class="subtitle">Our plan to make Canva on mobile as beloved as the desktop experience and to resurge MAU by capturing the video and social mobile market.</div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-pill live">⏳ In Progress</div>
+    <div class="meta-pill">Carly Daff · David Wang</div>
+    <div class="meta-pill">Mar 2026</div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ws0)"></div> WS0 Platform Foundations</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ws1)"></div> WS1 Core App</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ws2)"></div> WS2 Mobile Platform</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ws3)"></div> WS3 Native Video</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ws4)"></div> WS4 Video Spinoff</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--ws5)"></div> WS5 Editor Performance</div>
+  <div class="legend-item"><span style="font-size:14px;">⭐</span> Canva Launch Event</div>
+</div>
+
+<!-- MAIN TIMELINE GRID -->
+<div class="tl-grid">
+
+  <!-- ── HEADER ROW ── -->
+  <div class="tl-spacer"></div>
+
+  <div class="period-header">
+    <div class="period-label">H1 2026</div>
+    <div class="period-sub">Jan — Jun 2026</div>
+  </div>
+
+  <div class="period-header">
+    <div class="period-label">H2 2026</div>
+    <div class="period-sub">Jul — Dec 2026</div>
+    <div class="milestone-tag"><span class="milestone-star">⭐</span> CWT Droptober · Oct 2026</div>
+  </div>
+
+  <div class="period-header" style="border-radius:0 8px 0 0;">
+    <div class="period-label">H1 2027</div>
+    <div class="period-sub">Jan — Jun 2027</div>
+    <div class="milestone-tag"><span class="milestone-star">⭐</span> Create 2027 · Apr 2027</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WS0 PLATFORM FOUNDATIONS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="ws-label-cell">
+    <div class="ws-num">Workstream 0</div>
+    <div class="ws-title" style="color:var(--ws0)">Platform Foundations</div>
+    <div class="ws-owner-tag">Platform · Prod Platform · Infra · DE</div>
+    <ul class="ws-bullets">
+      <li>Login, API gateway, networking, rendering</li>
+      <li>Build &amp; distribution systems</li>
+      <li>Merge Lightspeed + NVE into unified rendering lib</li>
+      <li>Prerequisite for all other workstreams</li>
+    </ul>
+  </div>
+
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws0);">In flight now</div>
+  </div>
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws0);opacity:0.8;"></div>
+  </div>
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws0);opacity:0.65;">Ongoing</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WS1 CORE APP REIMAGINED -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="ws-label-cell" style="padding-bottom:6px;">
+    <div class="ws-num">Workstream 1</div>
+    <div class="ws-title" style="color:var(--ws1)">Core App Reimagined</div>
+    <div class="ws-owner-tag">C&amp;D · Editing · New Team (TBD)</div>
+    <ul class="ws-bullets">
+      <li>Ship the vision sprint's biggest bets</li>
+      <li>Intent-first creation, AI as the front door</li>
+      <li>Full-screen browsing, native navigation</li>
+      <li>Two tracks with different dependencies</li>
+    </ul>
+  </div>
+
+  <!-- Track A header spans all 3 cols via sub-rows -->
+  <div class="tl-cell" style="border-top:1px solid var(--border);flex-direction:column;gap:8px;padding-bottom:6px;">
+    <!-- Track A label -->
+    <div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ws1);margin-bottom:2px;">TRACK A · Iterative · Ships on WebView</div>
+    <div class="bar sub" style="background:var(--ws1);">Shipping continuously</div>
+  </div>
+  <div class="tl-cell" style="border-top:1px solid var(--border);flex-direction:column;gap:8px;padding-bottom:6px;">
+    <div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ws1);margin-bottom:2px;">TRACK A · Iterative · Ships on WebView</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="bar sub" style="background:var(--ws1);flex:0 0 60%;border-radius:5px 0 0 5px;">Full relaunch</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
+        <span style="font-size:18px;line-height:1;">⭐</span>
+        <span style="font-size:8px;font-weight:700;color:var(--canva-purple);white-space:nowrap;letter-spacing:0.06em;">CWT OCT</span>
+      </div>
+    </div>
+  </div>
+  <div class="tl-cell" style="border-top:1px solid var(--border);flex-direction:column;gap:8px;padding-bottom:6px;">
+    <div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ws1b);margin-bottom:2px;">TRACK B · Native features</div>
+    <div class="bar sub" style="background:var(--ws1b);">Native features shipping</div>
+  </div>
+
+
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WS2 MOBILE PLATFORM FOUNDATIONS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="ws-label-cell">
+    <div class="ws-num">Workstream 2</div>
+    <div class="ws-title" style="color:var(--ws2)">Mobile Platform Foundations</div>
+    <div class="ws-owner-tag">Platform · Ring-fenced post-CC26</div>
+    <ul class="ws-bullets">
+      <li>Choose the right tech: optimised WebView, React Native, or selective native</li>
+      <li>Spike post-Create 26: can WebView hit 2s target?</li>
+      <li>Build the platform layer everything else depends on</li>
+    </ul>
+  </div>
+
+  <div class="tl-cell">
+    <div style="display:flex;align-items:flex-end;justify-content:flex-end;">
+      <div class="bar" style="background:var(--ws2);opacity:0.7;color:#fff;flex:0 0 55%;border-radius:6px;font-size:9px;">Spike post-Create 26</div>
+    </div>
+  </div>
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws2);color:#fff;">Architecture decision → Build</div>
+  </div>
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws2);opacity:0.8;color:#fff;">Foundation live</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WS3 NATIVE VIDEO IN CORE APP -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="ws-label-cell">
+    <div class="ws-num">Workstream 3</div>
+    <div class="ws-title" style="color:var(--ws3)">Native Video in Core App</div>
+    <div class="ws-owner-tag">Infra · Native Video Engine · Effects Engine</div>
+    <ul class="ws-bullets">
+      <li>Competitive native video &amp; social creation in core app</li>
+      <li>Reverse Social + Video MAU decline</li>
+      <li>Proves product concept before spinoff</li>
+      <li>Gate condition for WS4</li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:8px;">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--canva-gold);flex-shrink:0;"></div>
+      <span style="font-size:9px;color:var(--canva-gold);font-weight:600;">WS4 gates on this result</span>
+    </div>
+  </div>
+
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws3);opacity:0.6;">In flight now</div>
+  </div>
+  <div class="tl-cell">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="bar" style="background:var(--ws3);flex:0 0 68%;border-radius:6px 0 0 6px;">Build &amp; ship native video</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
+        <span style="font-size:18px;line-height:1;">⭐</span>
+        <span style="font-size:8px;font-weight:700;color:var(--canva-purple);white-space:nowrap;letter-spacing:0.06em;">CWT OCT</span>
+      </div>
+    </div>
+  </div>
+  <div class="tl-cell"></div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WS4 VIDEO SPINOFF APP -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="ws-label-cell">
+    <div class="ws-num">Workstream 4</div>
+    <div class="ws-title" style="color:var(--ws4)">Video Spinoff App</div>
+    <div class="ws-owner-tag">China Team · Robin Zhang (to be established)</div>
+    <ul class="ws-bullets">
+      <li>Lightweight AI-first social creation app</li>
+      <li>Win social content MAU in Android growth markets</li>
+      <li>India, Indonesia, Brazil, LATAM</li>
+      <li>Conditional on WS3 gate at CWT 2026</li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:5px;margin-top:8px;">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--canva-gold);flex-shrink:0;"></div>
+      <span style="font-size:9px;color:var(--canva-gold);font-weight:600;">China team hire starts now regardless of gate</span>
+    </div>
+  </div>
+
+  <div class="tl-cell"></div>
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws4);opacity:0.6;">Non-native work begins</div>
+  </div>
+  <div class="tl-cell">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="bar" style="background:var(--ws4);flex:0 0 65%;border-radius:6px 0 0 6px;">Build AI-first social app</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
+        <span style="font-size:18px;line-height:1;">⭐</span>
+        <span style="font-size:8px;font-weight:700;color:var(--canva-purple);white-space:nowrap;letter-spacing:0.06em;">CREATE 27</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- WS5 EDITOR PERFORMANCE -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <div class="ws-label-cell">
+    <div class="ws-num">Workstream 5</div>
+    <div class="ws-title" style="color:var(--ws5)">Editor Performance</div>
+    <div class="ws-owner-tag">Platform · Lightspeed Renderer · DE · Editing Perf</div>
+    <ul class="ws-bullets">
+      <li>Speed up creation to close the retention gap</li>
+      <li>Users drop off at the editor</li>
+      <li>Lightspeed renderer + editing architecture</li>
+      <li>Full team forms once arch path is resolved</li>
+    </ul>
+  </div>
+
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws5);opacity:0.55;">Improvements in flight</div>
+  </div>
+  <div class="tl-cell">
+    <div class="bar" style="background:var(--ws5);opacity:0.75;">Architecture resolved · Full team forms</div>
+  </div>
+  <div class="tl-cell">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="bar" style="background:var(--ws5);flex:0 0 65%;border-radius:6px 0 0 6px;">Native rendering layer</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex-shrink:0;">
+        <span style="font-size:18px;line-height:1;">⭐</span>
+        <span style="font-size:8px;font-weight:700;color:var(--canva-purple);white-space:nowrap;letter-spacing:0.06em;">CREATE 27</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end tl-grid -->
+
+<!-- MEASURES OF SUCCESS -->
+<div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#1a1030;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:10px;margin-top:32px;">Measures of Success</div>
+<div class="metrics-strip" style="margin-top:0;">
+  <div class="metric-chip">
+    <strong>Mobile Retention</strong>
+    M3 mobile: 8–23% → target 20–30%+, closing the gap with web (20–33%).
+  </div>
+  <div class="metric-chip">
+    <strong>Android Load Time</strong>
+    Editor load on mid-tier devices: 8s+ → target &lt;2s. 75% of mobile users on Android.
+  </div>
+  <div class="metric-chip">
+    <strong>iOS Stability</strong>
+    Crash rate: 1.5–1.7% → target &lt;0.5%. Video crashes: 2.3% → near zero.
+  </div>
+  <div class="metric-chip">
+    <strong>Video &amp; Social MAU</strong>
+    Video MAUs declining 4.9% MoM → return to growth by CWT 2026.
+  </div>
+</div>
+
+</body>
+</html>
